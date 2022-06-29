@@ -7,11 +7,9 @@ import uuid
 
 class Player(models.Model):
     unique_id = models.UUIDField(
-        max_length=255, primary_key=True, default=uuid.uuid4)
-    user_name = models.CharField(max_length=100)
-    email = models.EmailField(max_length=100)
-    password = models.CharField(max_length=100)
-    role = models.CharField(max_length=100)
+        primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    player_name = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     phone_number = models.CharField(max_length=100)
