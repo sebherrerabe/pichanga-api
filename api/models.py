@@ -34,6 +34,7 @@ class Match(models.Model):
         Team, on_delete=models.CASCADE, related_name='team_b')
     team_a_score = models.IntegerField(default=0)
     team_b_score = models.IntegerField(default=0)
+    players_number = models.IntegerField(default=0)
     match_date = models.DateTimeField(auto_now_add=True)
     match_result = models.CharField(max_length=100, default="draw")
     start_time = models.TimeField(auto_now_add=True)
@@ -47,6 +48,12 @@ class TeamPlayer(models.Model):
     unique_id = models.UUIDField(
         max_length=255, primary_key=True, default=uuid.uuid4)
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    player = models.ForeignKey(Player, on_delete=models.CASCADE)
+
+class PlayerPerMatch(models.Model):
+    unique_id = models.UUIDField(
+        max_length=255, primary_key=True, default=uuid.uuid4)
+    match = models.ForeignKey(Match, on_delete=models.CASCADE)
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
 
 class Goal(models.Model):

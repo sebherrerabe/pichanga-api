@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from .models import Match, Team, Player, TeamPlayer, Goal
+from .models import Match, Team, Player, TeamPlayer, Goal, PlayerPerMatch
 from django.contrib.auth.models import User
 
 
@@ -8,6 +8,10 @@ class MatchSerialiser(ModelSerializer):
         model = Match
         fields = '__all__'
 
+class PlayerPerMatchSerialiser(ModelSerializer):
+    class Meta:
+        model = PlayerPerMatch
+        fields = '__all__'
 
 class TeamSerialiser(ModelSerializer):
     class Meta:

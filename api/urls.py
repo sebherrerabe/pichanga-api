@@ -12,6 +12,8 @@ urlpatterns = [
     path('', hello_world),
     path('matches/', views.handle_matches),
     path('matches/<str:match_id>/', views.handle_match),
+    path('matches/<str:match_id>/players/', views.handle_players_per_match),
+    path('matches/<str:match_id>/players/<str:player_id>/', views.handle_player_per_match),
     path('matches/<str:match_id>/goals/', views.get_match_goals),  
     path('matches/<str:match_id>/goals/<str:team>/', views.handle_match_per_team_goals),
     path('matches/<str:match_id>/goals/<str:team>/<str:goal_id>/', views.handle_match_per_team_goal),

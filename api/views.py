@@ -4,8 +4,8 @@ from django.contrib.auth import authenticate
 
 # Create your views here.
 
-from .serializers import MatchSerialiser, TeamSerialiser, PlayerSerialiser, TeamPlayerSerialiser, GoalSerialiser, UserSerialiser
-from .models import Match, Team, Player, TeamPlayer, Goal
+from .serializers import MatchSerialiser, TeamSerialiser, PlayerSerialiser, TeamPlayerSerialiser, GoalSerialiser, UserSerialiser, PlayerPerMatchSerialiser
+from .models import Match, Team, Player, TeamPlayer, Goal, PlayerPerMatch
 from django.contrib.auth.models import User
 
 
@@ -99,6 +99,27 @@ def handle_match_per_team_goal(request, match_id, team, goal_id):
         goal = Goal.objects.get(unique_id=goal_id)
         goal.delete()
         return Response("Goal deleted")
+
+
+@api_view(['GET'])
+def handle_players_per_match(request, match_id):
+    if request.method == 'GET':
+        players = PlayerPerMatch.objects.filter(match=match_id)
+        serializer = PlayerPerMatchSerialiser(players, many=True)
+        return Response(serializer.data)
+
+
+@api_view(['POST', 'DELETE'])
+def handle_player_per_match(request, match_id, player_id):
+    if request.method == 'POST':
+        player = PlayerPerMatch.objects.create(
+            match=Match.objects.get(unique_id=match_id), player=Player.objects.get(unique_id=player_id))
+        serializer = PlayerPerMatchSerialiser(player)
+        return Response(serializer.data)
+    elif request.method == 'DELETE':
+        player = PlayerPerMatch.objects.get(player=player_id)
+        player.delete()
+        return Response("Player deleted")
 
 # TEAMS
 
@@ -224,7 +245,8 @@ def handle_users(request):
         serializer = UserSerialiser(users, many=True)
         return Response(serializer.data)
     elif request.method == 'POST':
-        user = User.objects.create(username=request.data['username'], password=request.data['password'], email=request.data['email'])
+        user = User.objects.create(
+            username=request.data['username'], password=request.data['password'], email=request.data['email'])
         if 'invitation_code' in request.data:
             player = Player.objects.get(
                 unique_id=request.data['invitation_code'])
