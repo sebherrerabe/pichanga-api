@@ -23,6 +23,9 @@ class Team(models.Model):
         max_length=255, primary_key=True, default=uuid.uuid4)
     team_name = models.CharField(max_length=100)
     is_default = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(
+        User, on_delete=models.SET_DEFAULT, default=None, null=True)
 
 
 class Match(models.Model):
@@ -42,6 +45,8 @@ class Match(models.Model):
     location = models.CharField(max_length=100, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    organised_by = models.ForeignKey(
+        User, on_delete=models.CASCADE, default=None, null=True)
 
 
 class TeamPlayer(models.Model):
