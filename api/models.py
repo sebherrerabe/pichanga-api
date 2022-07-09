@@ -22,6 +22,7 @@ class Team(models.Model):
     unique_id = models.UUIDField(
         max_length=255, primary_key=True, default=uuid.uuid4)
     team_name = models.CharField(max_length=100)
+    nationality = models.CharField(max_length=100)
     is_default = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(
